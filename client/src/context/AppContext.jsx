@@ -106,7 +106,7 @@ export function AppContextProvider({ children }) {
           //Default file selection
           const files = Object.keys(data.files);
           if(files.length>0){
-            setActive((prev)=>{
+            setActiveFile((prev)=>{
               if(files.includes(prev)) return prev;
               if(files.includes("/App.js")) return "/App.js";
               return files[0]
@@ -174,10 +174,29 @@ export function AppContextProvider({ children }) {
         }finally{
           setGenerateingProject(false);
         }
-        
-      },[navigate,user]
-    )
+      },[navigate,user])//2line diff
 
+      const handleChat=useCallback(
+        async (prompt)=>{
+          if(!activeProject || !user) return;
+          setChatLoading(true)
+          try{
+            const {data} = await api.post(`/api.projects/${activeProject._id}/chat`,{prompt});
+            setActiveProject(data)
+            if(data.errors && data.errors.length >0){
+              toast.error(`${data.errors.length} revision patch(es) failed`);
+            }else{
+              toast.success(`Updated to version ${data.version}`);
+            }
+          } catch (error){
+            console.error("Revision request failed:", err);
+            toast.error(err?.response?.data?.error || "Revision request failed");
+            }finally{
+              setLoadingActiveProject(false)
+            }
+        },[activeProject, user]
+      )
+    
   return (
     <AppContext.Provider value={{
         user,
@@ -186,6 +205,8 @@ export function AppContextProvider({ children }) {
         register,
         projects,
         loadingProjects,
+        activeProject,
+        loadingActiveProject,
         chatLoading,
         generatingProject,
         activeFile,
@@ -195,7 +216,8 @@ export function AppContextProvider({ children }) {
         loadProjects,
         loadProject,
         handleGenerate,
-        handleDelete
+        handleDelete,
+        logout
     }}>
       {children}
     </AppContext.Provider>
