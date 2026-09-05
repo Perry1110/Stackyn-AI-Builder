@@ -6,6 +6,12 @@ import BuilderHeader from '../components/BuilderHeader';
 import { FolderTreeIcon, MessageSquareIcon } from 'lucide-react';
 import ChatPannel from '../components/ChatPannel'
 import FileExplorer from '../components/FileExplorer';
+import PreviewPannel from '../components/PreviewPannel';
+import AgentProgressDashboard from '../components/AgentProgressDashboard';
+import PublishModel from '../components/PublishModel';
+import api from '../api/api';
+import { toast } from 'react-hot-toast';
+import { exportProjectZip } from '../utils/exportProject'; 
 
 const BuilderPage = () => {
 
@@ -40,11 +46,24 @@ const BuilderPage = () => {
   }
 
   const handlePublish = async () =>{
-
+    if(!id) return;
+    setPublishing(true);
+    try{
+      await api.post(`/projects/${id}/publish`);
+      const url = `${window.location.origin}/publish/${id}`;
+      setPublishUrl(url);
+      toast.success("Project published successfully!")
+    }catch(err){
+      console.error("Failed to publish project:", err);
+      toast.error("Failed to publish project.")
+    }finally{
+      setPublishing(false);
+    }
   }
 
   const handleDownload = () =>{
-
+    if(!activeProject) return;
+    exportProjectZip(activeProject);
   }
 
   if(loadingActiveProject || !activeProject) {
@@ -99,9 +118,17 @@ const BuilderPage = () => {
           </div>
         </div>
 
-        {/* Right Sidebar */}
+        {/* Preview / Code Area */}
+        <div className='flex-1 overflow-hidden'>
+          {activeProject.status === "pending" || activeProject.status === "generating" || activeProject.status === "failed" ? (
+            <AgentProgressDashboard project={activeProject} />
+          ) : (
+            <PreviewPannel project={activeProject} activeFile={activeFile} showCode={showCode} />
+          )}
+        </div>
       </div>
-      
+
+      {publishUrl && <PublishModel publishUrl={publishUrl} onClose={() => setPublishUrl(null)} />}
     </div>
   )
 }
