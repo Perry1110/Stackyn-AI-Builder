@@ -11,6 +11,7 @@ function SandpackFileWatcher({ onLiveFilesChange}){
   const { activeProject, updateProjectFiles } = useAppContext();
 
   const activeProjectRef = useRef(activeProject)
+  
   useEffect(()=>{
     activeProjectRef.current = activeProject;
   }, [activeProject])
@@ -52,6 +53,7 @@ const PreviewPannel = ({project, activeFile, showCode}) => {
         setPrevProjectKey(currentKey);
         setLiveFiles(project.files);
     }
+
 
     const handleLiveFilesChange = (newFiles) => {
       setLiveFiles((prev) =>{
@@ -138,7 +140,6 @@ const PreviewPannel = ({project, activeFile, showCode}) => {
 
           <SandpackPreview showNavigator={false} showRefreshButton showOpenInCodeSandbox={false} showSandpackErrorOverlay={showErrorOverlay} style={{height: "100%", flex: showCode ? 1 : 2, minWidth: "0"}}/>
         </SandpackLayout>
-
 
 
 
