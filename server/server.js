@@ -22,10 +22,17 @@ app.use('/api/auth', authRouter)
 app.use("/api/projects",projectRouter)
 
 //Centrallised Error Handling
-app.use((err, _req, res, _next) => {
+/*app.use((err, _req, res, _next) => {
     console.error(`Error: ${err.message}`);
     res.status(500).json({ error: "err.message" });
-})
+})*/
+app.use((err, _req, res, _next) => {
+    console.error(`Error: ${err.message}`);
+
+    res.status(500).json({
+        error: err.message || "Internal server error"
+    });
+});
 
 const port = process.env.PORT || 3000;
 

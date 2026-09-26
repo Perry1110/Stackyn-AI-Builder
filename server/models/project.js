@@ -2,7 +2,7 @@ import mongoose, {Schema} from "mongoose";
 
 const MessageSchema = new Schema({
     role: {type: String, enum: ["user","assistant"],required: true},
-    content: {type: Date, default: Date.now},
+    content: {type: String, required: true},
     timestamp: {type: Date, default: Date.now}
 },{_id: false})
 
@@ -29,5 +29,5 @@ const ProjectSchema = new Schema({
 
 
 
-
+//Create a portfolio for a web developer
 export const Project = mongoose.model('Project',ProjectSchema)

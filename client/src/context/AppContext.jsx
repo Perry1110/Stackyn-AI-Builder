@@ -26,7 +26,7 @@ export function AppContextProvider({ children }) {
     const [showCode, setShowCode] = useState(false);
 
     //Auth Actions
-    const checkSession = async()=>{
+    /*const checkSession = async()=>{
       try{
         const{ data } =await api.get("/api/auth/me");
         setUser(data.user);
@@ -35,7 +35,17 @@ export function AppContextProvider({ children }) {
       }finally{
         setLoadingUser(false)
       }
+    }*/
+   const checkSession = useCallback(async () => {
+    try {
+        const { data } = await api.get("/api/auth/me");
+        setUser(data.user);
+    } catch (error) {
+        setUser(null);
+    } finally {
+        setLoadingUser(false);
     }
+}, []);
 
     useEffect(()=>{
       checkSession();
