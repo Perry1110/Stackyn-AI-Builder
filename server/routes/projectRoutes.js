@@ -1,11 +1,12 @@
 import {Router} from "express";
 import { createProject, deleteProject, getProject, getpublicProject, listProjects, publishProject, updateProjectFiles } from "../controllers/projectController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
+import { chat } from "../controllers/chatController.js";
 
 const projectRouter = Router();
 
 //Public Route
-projectRouter.get("public/:id", getpublicProject)
+projectRouter.get("/public/:id", getpublicProject)
 
 //Protect all following routes
 projectRouter.use(authMiddleware)
@@ -16,5 +17,8 @@ projectRouter.get("/:id", getProject)
 projectRouter.delete("/:id", deleteProject)
 projectRouter.put("/:id/files", updateProjectFiles)
 projectRouter.post("/:id/publish", publishProject)
+
+//Chat
+projectRouter.post("/:id/chat",chat)
 
 export default projectRouter;
