@@ -4,24 +4,24 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Loading from '../components/Loading';
 import BuilderHeader from '../components/BuilderHeader';
 import { FolderTreeIcon, MessageSquareIcon } from 'lucide-react';
-import ChatPannel from '../components/ChatPannel'
+import ChatPanel from '../components/ChatPanel';
 import FileExplorer from '../components/FileExplorer';
-import PreviewPannel from '../components/PreviewPannel';
+import PreviewPanel from '../components/PreviewPanel';
 import AgentProgressDashboard from '../components/AgentProgressDashboard';
 import PublishModel from '../components/PublishModel';
 import api from '../api/api';
-import { toast } from 'react-hot-toast';
-import { exportProjectZip } from '../utils/exportProject'; 
+import toast from 'react-hot-toast';
+import { exportProjectZip } from '../utils/exportProject';
 
 const BuilderPage = () => {
 
-  const{id} = useParams()
+  const {id} = useParams()
   const navigate = useNavigate()
   const [leftTab, setLeftTab] = useState("chat");
   const [publishing, setPublishing] = useState(false);
   const [publishUrl, setPublishUrl] = useState(null);
 
-  const {activeProject, loadingActiveProject, activeFile, showCode, setActiveFile, setShowCode, loadProject, logout, chatLoading, handleChat}=useAppContext();
+  const {activeProject, loadingActiveProject, activeFile, showCode, setActiveFile, setShowCode, loadProject, logout, chatLoading, handleChat} = useAppContext();
 
 
 
@@ -30,41 +30,41 @@ const BuilderPage = () => {
     loadProject(id)
   },[id])
 
-  
+   
 
   const handleOpenPreview = ()=>{
     if(!id) return;
-    window.open(`/preview/${id}`,"_blank")
+    window.open(`/preview/${id}`, "_blank")
   }
 
-  const handlePublish = async () =>{
+  const handlePublish = async () => {
     if(!id) return;
-    setPublishing(true);
-    try{
-      await api.post(`/projects/${id}/publish`);
+    setPublishing(true)
+    try {
+      await api.post(`/api/projects/${id}/publish`);
       const url = `${window.location.origin}/publish/${id}`;
       setPublishUrl(url);
-      toast.success("Project published successfully!")
-    }catch(err){
-      console.error("Failed to publish project:", err);
-      toast.error("Failed to publish project.")
+      toast.success("Website published successfully!")
+    } catch (err) {
+      console.error("Publish failed:", err);
+      toast.error(err?.response?.data?.error || "Publish failed");
     }finally{
-      setPublishing(false);
+      setPublishing(false)
     }
   }
 
-  const handleDownload = () =>{
+  const handleDownload = () => {
     if(!activeProject) return;
-    exportProjectZip(activeProject);
+    exportProjectZip(activeProject)
   }
 
-  if(loadingActiveProject || !activeProject) {
+  if(loadingActiveProject || !activeProject){
     return <Loading />
   }
 
   return (
     <div className="h-screen flex flex-col bg-white overflow-hidden text-zinc-900 relative">
-      {/*Top Bar Header */}
+      {/* Top Bar Header */}
       <BuilderHeader
       projectName={activeProject.name}
       version={activeProject.version}
@@ -77,28 +77,28 @@ const BuilderPage = () => {
       onBack={()=> navigate("/")}
       onLogout={logout} />
 
-      {/*Main Layout*/}
+      {/* Main Layout */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Left Sidebar*/}
-        <div className='w-[320px] shrink-0 flex flex-col border-r border-zinc-200 bg-white'>
+        {/* Left Sidebar */}
+        <div className="w-[320px] shrink-0 flex flex-col border-r border-zinc-200 bg-white">
           {/* Sidebar Tabs */}
           <div className="flex border-b border-zinc-100">
-            <button onClick={()=>setLeftTab("chat")}
-              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium cursor-pointer ${leftTab === "chat" ? "text-zinc-900 border-b-2 border-zinc-900" : ""}`}>
+            <button onClick={()=> setLeftTab("chat")}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium cursor-pointer ${leftTab === "chat" ? "text-zinc-900 border-b-2 border-zinc-900" : "text-zinc-400 hover:text-zinc-700"}`}>
               <MessageSquareIcon size={13} /> Chat
             </button>
 
-            <button onClick={()=>setLeftTab("files")}
-              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium cursor-pointer ${leftTab === "files" ? "text-zinc-900 border-b-2 border-zinc-900" : ""}`}>
+            <button onClick={()=> setLeftTab("files")}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium cursor-pointer ${ leftTab === "files" ? "text-zinc-900 border-b-2 border-zinc-900" : "text-zinc-400 hover:text-zinc-700" }`}>
               <FolderTreeIcon size={13} /> Files
             </button>
           </div>
 
           {/* Sidebar Content */}
-          <div>
+          <div className="flex-1 overflow-hidden">
             {
-              leftTab === 'chat' ?(
-                <ChatPannel messages={activeProject.messages} onSend={handleChat} loading={chatLoading}/>
+              leftTab === 'chat' ? (
+                <ChatPanel messages={activeProject.messages} onSend={handleChat} loading={chatLoading}/>
               ) : (
                 <FileExplorer files={activeProject.files} activeFile={activeFile} onFileSelect={(path)=>{
                   setActiveFile(path);
@@ -111,16 +111,16 @@ const BuilderPage = () => {
         </div>
 
         {/* Preview / Code Area */}
-        <div className='flex-1 overflow-hidden'>
-          {activeProject.status === "pending" || activeProject.status === "generating" || activeProject.status === "failed" ? (
-            <AgentProgressDashboard project={activeProject} />
-          ) : (
-            <PreviewPannel project={activeProject} activeFile={activeFile} showCode={showCode} />
-          )}
+        <div className="flex-1 overflow-hidden">
+            {activeProject.status === "pending" || activeProject.status === "generating" || activeProject.status === "failed" ? (
+              <AgentProgressDashboard project={activeProject}/>
+            ) : (
+              <PreviewPanel project={activeProject} activeFile={activeFile} showCode={showCode}/>
+            )}
         </div>
       </div>
 
-      {publishUrl && <PublishModel publishUrl={publishUrl} onClose={() => setPublishUrl(null)} />}
+      {publishUrl && <PublishModel publishUrl={publishUrl} onClose={()=> setPublishUrl(null)}/>}
     </div>
   )
 }

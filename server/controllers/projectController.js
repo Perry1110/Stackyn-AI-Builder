@@ -1,27 +1,27 @@
-import { Project } from "../models/project.js";
-import crypto from "crypto"
-import {generateProject} from "../services/ai.js";
+import { Project } from "../models/Project.js";
+import crypto from "crypto";
+import { generateProject } from "../services/ai.js";
 
 
 function hashContent(content){
     return crypto.createHash("md5").update(content).digest("hex").slice(0,12)
 }
 
-//POST/api/projects
-//create a new project from an AI prompt
+// POST /api/projects
+// Create a new project from an AI prompt.
 export async function createProject(req, res){
     const {prompt} = req.body;
-    if(!prompt || typeof prompt !=='string'){
-        res.status(400).json({error: "prompt is required"});
+    if(!prompt || typeof prompt !== 'string'){
+        res.status(400).json({ error: "prompt is required" });
         return;
     }
 
     if(!req.user){
-        res.status(401).json({error: "Unauthorized"});
+        res.status(401).json({ error: "Unauthorized" });
         return;
     }
 
-    //Create project in DB immediately with "pending" status
+    // Create project in DB immediately with "pending" status
     const project = await Project.create({
         name: "Planning project...",
         description: prompt,
@@ -39,9 +39,9 @@ export async function createProject(req, res){
         error: null,
     })
 
-    //Start background generation
+    // Start background generation
     runBackgroundGeneration(project._id.toString(), prompt).catch((err)=>{
-        console.error(`[Background AI] Fatal generation error for project ${project._id}:`,err)
+        console.error(`[Background AI] Fatal generation error for project ${project._id}:`, err)
     })
 
     res.status(201).json({
@@ -60,14 +60,14 @@ export async function createProject(req, res){
     })
 }
 
-//Background worker to progressive generate files and update database in real-time
-export async function runBackgroundGeneration(projectId, prompt){
-    try{
+// Background worker to progressive generate files and update database in real-time.
+async function runBackgroundGeneration(projectId, prompt){
+    try {
         console.log(`[Background AI] Starting generation for project ${projectId}`);
         const result = await generateProject(prompt, {
-            onPlan: async (plan)=>{
+            onPlan: async (plan) =>{
                 console.log(`[Background AI] Plan created for project ${projectId}. Planned ${plan.files.length} files.`);
-                const fileList = plan.files.map((f)=>`-\`${f.path}\`: ${f.description}`).join("/n");
+                const fileList = plan.files.map((f)=>`- \`${f.path}\`: ${f.description}`).join("\n");
 
                 await Project.findByIdAndUpdate(projectId, {
                     name: plan.projectName || "Generated Project",
@@ -95,8 +95,8 @@ export async function runBackgroundGeneration(projectId, prompt){
 
                 if(project){
                     project.files = project.files || {};
-                    project.files[path] = {content: code, hash: hashContent(code)};
-                    project.filesGenerated =[...Project(project.filesGenerated || []), path];
+                    project.files[path] = { content: code, hash: hashContent(code) };
+                    project.filesGenerated = [...(project.filesGenerated || []), path];
                     project.messages.push({
                         role: "assistant",
                         content: `Created file "${path}"`,
@@ -120,12 +120,12 @@ export async function runBackgroundGeneration(projectId, prompt){
             }
             project.messages.push({
                 role: "assistant",
-                content: `Website generation complete! You can view and edit files.`,
+                content: `Website generation complete! You can view and edit the files.`,
                 timestamp: new Date(),
             })
             await project.save();
         }
-    }catch(err){
+    } catch (err) {
         console.error(`[Background AI] Fatal generation error for project ${projectId}:`, err);
         await Project.findByIdAndUpdate(projectId, {
             status: "failed",
@@ -141,43 +141,39 @@ export async function runBackgroundGeneration(projectId, prompt){
     }
 }
 
-//GET/api/projects
-//List all projects owned by the user (summary only, no file contents)
+// GET /api/projects
+// List all projects owned by the user (summary only, no file contents).
 export async function listProjects(req, res){
     if(!req.user){
-        res.status(401).json({error: "Unauthorised"});
+        res.status(401).json({ error: "Unauthorized" });
         return;
     }
 
     const projects = await Project.find(
         {owner: req.user.userId},
-        {name: 1, description: 1, version: 1, createdAt: 1, updateAt: 1 }
+        {name: 1, description: 1, version: 1, createdAt: 1, updatedAt: 1 }
     ).sort({updatedAt: -1});
 
     res.json(projects)
 }
 
-//GET/api/projects/:id
-//Get full project details
+// GET /api/projects/:id
+// Get full project details.
 export async function getProject(req, res){
-    if(!req.user){
-        res.status(401).json({error: "Unauthorised"});
+     if(!req.user){
+        res.status(401).json({ error: "Unauthorized" });
         return;
     }
 
-    const project = await Project.findOne({_id: req.params.id, owner: req.user.userId})
+    const project = await Project.findOne({_id: req.params.id, owner: req.user.userId })
 
     if(!project){
-        res.status(404).json({error: "Project not found"});
+        res.status(404).json({ error: "Project not found" });
         return;
     }
 
-    /*const filesObj = {};
-    for(const [path,entry] of Object.getOwnPropertyDescriptors(project.files)){
-        filesObj[path] = entry.content;
-    }*/
-   const filesObj = {};
-    for (const [path, entry] of Object.entries(project.files || {})) {
+    const filesObj = {};
+    for (const [path, entry] of Object.entries(project.files)) {
         filesObj[path] = entry.content;
     }
 
@@ -198,46 +194,46 @@ export async function getProject(req, res){
     })
 }
 
-//DELETE/api/projects/:id
-//Delete a project
+// DELETE /api/projects/:id
+// Delete a project.
 export async function deleteProject(req, res){
     if(!req.user){
-        res.status(401).json({error: "Unauthorised"});
+        res.status(401).json({ error: "Unauthorized" });
         return;
     }
 
-    const result = await Project.findOneAndDelete({_id: req.params.id,owner: req.user.userId})
+    const result = await Project.findOneAndDelete({_id: req.params.id, owner: req.user.userId })
     if(!result){
-        res.status(404).json({error: "Project not found"});
+        res.status(404).json({ error: "Project not found" });
         return;
     }
     res.json({success: true})
 }
 
-//PUT/api/projects/:id/files
-//Update project files (mannual edits)
+// PUT /api/projects/:id/files
+// Update project files (manual edits).
 export async function updateProjectFiles(req, res){
-    const {files}=req.body;
+    const { files } = req.body;
     if(!files || typeof files !== 'object'){
-        res.status(400).json({error: "files object is required"});
-        return;
+        res.status(400).json({ error: "files object is required" });
+        return
     }
 
-    if(!req.user){
-        res.status(401).json({error: "Unauthorised"});
-        return;
+    if (!req.user){
+       res.status(401).json({ error: "Unauthorized" });
+        return; 
     }
-    
+
     const project = await Project.findOne({_id: req.params.id, owner: req.user.userId})
 
     if(!project){
-        res.status(404).json({error: "Project not found"});
+        res.status(404).json({ error: "Project not found" });
         return;
     }
 
-    //Rebuild project files map with content and hashes
-    const newFiles={};
-    for(const [path, content] of Object.entries(files)){
+    // Rebuild project files map with content & hashes
+    const newFiles = {};
+    for (const [path, content] of Object.entries(files)) {
         if(typeof content === "string"){
             newFiles[path] = {content, hash: hashContent(content)}
         }
@@ -246,11 +242,9 @@ export async function updateProjectFiles(req, res){
     project.files = newFiles;
     await project.save();
 
-    const filesObj={};
-    for(const [path, entry] of Object.entries(project.files)){
-        if(typeof entry.content === "string"){
-            filesObj[path] = {content, hash: hashContent(content)}
-        }
+    const filesObj = {};
+    for (const [path, entry] of Object.entries(project.files)) {
+        filesObj[path] = entry.content;
     }
 
     res.json({
@@ -265,49 +259,49 @@ export async function updateProjectFiles(req, res){
     })
 }
 
-//POST/api/projects/:id/publish
-//Mark a project as publicly published
+// POST /api/projects/:id/publish
+// Mark a project as publicly published.
 export async function publishProject(req, res){
-    if(!req.user){
-        res.status(401).json({error: "Unauthorised"});
+     if (!req.user) {
+        res.status(401).json({ error: "Unauthorized" });
         return;
     }
 
-    const project= await Project.findOneAndUpdate(
+    const project = await Project.findOneAndUpdate(
         {_id: req.params.id, owner: req.user.userId},
         {published: true},
-        {returnDoccument: "after"}
+        {returnDocument: "after"}
     );
 
     if(!project){
-        res.status(404).json({error: "Project not found"});
+        res.status(404).json({ error: "Project not found" });
         return;
     }
 
-    res.json({success: true, published: project.published});
-
+    res.json({ success: true, published: project.published });
+        
 }
 
-//PUT/api/projects/:id/publish
-//Get a publicly published project details (without auth)
-export async function getpublicProject(req, res){
+// GET /api/projects/public/:id
+// Get a publicly published project details (without auth).
+export async function getPublicProject(req, res){
     const project = await Project.findById(req.params.id);
     if(!project){
-        res.status(404).json({error: "Project not found"});
+        res.status(404).json({ error: "Project not found" });
         return;
     }
-    
+
     if(!project.published){
-        res.status(403).json({error: "Project is not published yet"});
+        res.status(403).json({ error: "Project is not published yet" });
         return;
     }
 
     const filesObj = {};
-    for(const [path, entery] of Object.entries(project.files)){
-            filesObj[path] = entery.content;
+    for (const [path, entry] of Object.entries(project.files)) {
+            filesObj[path] = entry.content;
     }
 
-    res.json({
+     res.json({
         _id: project._id,
         name: project.name,
         description: project.description,
@@ -315,3 +309,4 @@ export async function getpublicProject(req, res){
         version: project.version,
     })
 }
+

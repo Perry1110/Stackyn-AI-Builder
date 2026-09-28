@@ -1,29 +1,29 @@
 import React, { useEffect, useState } from 'react'
-import { data, useParams } from 'react-router-dom';
-import api from '../api/api';
-import Loading from '../components/Loading';
-import { AlertCircleIcon } from 'lucide-react';
-import FullPagePreview from '../components/FullPagePreview';
-import { useAppContext } from '../context/AppContext';
+import { data, useParams } from 'react-router-dom'
+import api from '../api/api'
+import Loading from '../components/Loading'
+import { AlertCircleIcon } from 'lucide-react'
+import FullPagePreview from '../components/FullPagePreview'
+import { useAppContext } from '../context/AppContext'
 
 const PreviewPage = () => {
-  const {id} = useParams()
-  const {activeProject: project, loadingActiveProject: loading, loadProject} = useAppContext();
+  const { id } = useParams()
+  const {activeProject: project, loadingActiveProject: loading, loadProject} = useAppContext()
 
-  useEffect(() => {
+  useEffect(()=>{
     if(id){
-      loadProject(id);
+      loadProject(id)
     }
+    
+  },[id])
 
-  }, [id]);
-
-  if(loading){
+  if(loading || !project) {
     return <Loading />
   }
 
-  
+
   return (
-    <FullPagePreview files={project.files} />
+    <FullPagePreview files={project.files}/>
   )
 }
 
