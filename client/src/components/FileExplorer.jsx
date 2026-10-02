@@ -28,10 +28,10 @@ function buildTree(paths){
 }
 
 function getFileIcon(name){
-    if(name.endsWith(".css")) return <FileTextIcon size={14} className="text-sky-500"/>;
-    if(name.endsWith(".jsx") || name.endsWith(".js")) return <FileCodeIcon size={14} className="text-amber-500"/>;
-    if(name.endsWith(".json")) return <FileTextIcon size={14} className="text-emerald-500"/>;
-    return <FileTextIcon size={14} className="text-zinc-400" />;
+    if(name.endsWith(".css")) return <FileTextIcon size={14} className="text-cyan-400 shrink-0"/>;
+    if(name.endsWith(".jsx") || name.endsWith(".js")) return <FileCodeIcon size={14} className="text-amber-400 shrink-0"/>;
+    if(name.endsWith(".json")) return <FileTextIcon size={14} className="text-emerald-400 shrink-0"/>;
+    return <FileTextIcon size={14} className="text-zinc-400 shrink-0" />;
 }
 
 function TreeItem({node, activeFile, onFileSelect, depth = 0 }){
@@ -40,9 +40,9 @@ function TreeItem({node, activeFile, onFileSelect, depth = 0 }){
     if(node.isDir){
         return (
             <div>
-                <div className="flex items-center gap-2 py-1 px-2 text-xs text-zinc-400 select-none" 
+                <div className="flex items-center gap-2 py-1 px-2 text-xs text-zinc-300 select-none font-medium" 
                 style={{paddingLeft: `${depth * 12 + 8}px`}}>
-                    <FolderOpenIcon size={14} className='text-zinc-800 opacity-60'/>
+                    <FolderOpenIcon size={14} className='text-purple-400 shrink-0'/>
                     <span>{node.name}</span>
                 </div>
                 {node.children.map((child)=>(
@@ -54,7 +54,11 @@ function TreeItem({node, activeFile, onFileSelect, depth = 0 }){
 
     return (
         <button onClick={()=> onFileSelect(node.path)} 
-        className={`w-full flex items-center gap-2 py-1.5 px-2 text-xs transition-colors rounded-md cursor-pointer ${isActive ? "bg-zinc-100 text-zinc-950 font-medium" : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900"}`}
+        className={`w-full flex items-center gap-2 py-1.5 px-2 text-xs transition-colors rounded-md cursor-pointer ${
+            isActive 
+              ? "bg-purple-600/25 border border-purple-400/35 text-purple-200 font-semibold shadow-sm" 
+              : "text-zinc-400 hover:bg-white/5 hover:text-zinc-200 border border-transparent"
+        }`}
         style={{paddingLeft: `${depth * 12 + 8}px`}}>
             {getFileIcon(node.name)}
             <span className='truncate'>{node.name}</span>
@@ -66,8 +70,8 @@ const FileExplorer = ({files, activeFile, onFileSelect }) => {
 
     const tree = useMemo(()=> buildTree(Object.keys(files)), [files])
   return (
-    <div className="py-2 overflow-y-auto hide-scrollbar">
-        <p className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-widest text-zinc-400">Files</p>
+    <div className="py-2 overflow-y-auto hide-scrollbar text-white">
+        <p className="px-3 py-1.5 text-[10px] font-semibold uppercase tracking-widest text-zinc-400">Project Files</p>
             {tree.map((node)=>(
                 <TreeItem key={node.path} node={node} activeFile={activeFile} onFileSelect={onFileSelect}/>
             ))}

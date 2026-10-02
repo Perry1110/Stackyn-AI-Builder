@@ -23,14 +23,10 @@ const BuilderPage = () => {
 
   const {activeProject, loadingActiveProject, activeFile, showCode, setActiveFile, setShowCode, loadProject, logout, chatLoading, handleChat} = useAppContext();
 
-
-
   useEffect(()=>{
     if(!id) return;
     loadProject(id)
   },[id])
-
-   
 
   const handleOpenPreview = ()=>{
     if(!id) return;
@@ -63,7 +59,7 @@ const BuilderPage = () => {
   }
 
   return (
-    <div className="h-screen flex flex-col bg-white overflow-hidden text-zinc-900 relative">
+    <div className="h-screen flex flex-col bg-[#090314] overflow-hidden text-white relative font-sans">
       {/* Top Bar Header */}
       <BuilderHeader
       projectName={activeProject.name}
@@ -80,17 +76,17 @@ const BuilderPage = () => {
       {/* Main Layout */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left Sidebar */}
-        <div className="w-[320px] shrink-0 flex flex-col border-r border-zinc-200 bg-white">
+        <div className="w-[320px] shrink-0 flex flex-col border-r border-white/10 bg-[#0e051f]/90 backdrop-blur-xl">
           {/* Sidebar Tabs */}
-          <div className="flex border-b border-zinc-100">
+          <div className="flex border-b border-white/10 bg-black/20">
             <button onClick={()=> setLeftTab("chat")}
-              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium cursor-pointer ${leftTab === "chat" ? "text-zinc-900 border-b-2 border-zinc-900" : "text-zinc-400 hover:text-zinc-700"}`}>
-              <MessageSquareIcon size={13} /> Chat
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium cursor-pointer transition ${leftTab === "chat" ? "text-purple-300 border-b-2 border-purple-400 bg-white/5 font-semibold" : "text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.02]"}`}>
+              <MessageSquareIcon size={13} className={leftTab === "chat" ? "text-purple-400" : "text-zinc-500"} /> Chat
             </button>
 
             <button onClick={()=> setLeftTab("files")}
-              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium cursor-pointer ${ leftTab === "files" ? "text-zinc-900 border-b-2 border-zinc-900" : "text-zinc-400 hover:text-zinc-700" }`}>
-              <FolderTreeIcon size={13} /> Files
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium cursor-pointer transition ${ leftTab === "files" ? "text-purple-300 border-b-2 border-purple-400 bg-white/5 font-semibold" : "text-zinc-400 hover:text-zinc-200 hover:bg-white/[0.02]" }`}>
+              <FolderTreeIcon size={13} className={leftTab === "files" ? "text-purple-400" : "text-zinc-500"} /> Files
             </button>
           </div>
 
@@ -111,7 +107,7 @@ const BuilderPage = () => {
         </div>
 
         {/* Preview / Code Area */}
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden bg-[#090314]">
             {activeProject.status === "pending" || activeProject.status === "generating" || activeProject.status === "failed" ? (
               <AgentProgressDashboard project={activeProject}/>
             ) : (

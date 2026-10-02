@@ -227,7 +227,9 @@ export function AppContextProvider({children}){
     return (
         <AppContext.Provider value={{
             user,
+            setUser,
             loadingUser,
+            checkSession,
             login,
             register,
             projects,

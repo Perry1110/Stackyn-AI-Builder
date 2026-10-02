@@ -1,6 +1,103 @@
-<svg width="63" height="71" viewBox="0 0 63 71" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M0.87793 22.8482V40.4288L11.7198 34.2753V23.4334L28.1291 14.0567L17.5814 7.61719L5.98284 14.1282C2.82985 15.8982 0.87793 19.2324 0.87793 22.8482Z" fill="white"/>
-<path d="M63 47.4682V29.8876L52.1581 36.0411V46.883L35.7488 56.2597L46.2965 62.6992L57.8951 56.1882C61.0481 54.4182 63 51.084 63 47.4682Z" fill="white"/>
-<path d="M62.5224 22.1214L62.707 24.614L51.8652 30.4744V23.4419L21.0977 6.43948L31.6454 0L57.3558 14.0907C60.3274 15.7193 62.2721 18.742 62.5224 22.1214Z" fill="white"/>
-<path d="M0.184636 48.7927L0 46.3001L10.8419 40.4396V47.4722L41.6093 64.4746L31.0616 70.9141L5.35122 56.8233C2.37962 55.1947 0.434958 52.172 0.184636 48.7927Z" fill="white"/>
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradients for Slab 1 (Top - Cyan to Indigo) -->
+    <linearGradient id="slab1-top" x1="17" y1="3" x2="53" y2="21" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="60%" stop-color="#60A5FA"/>
+      <stop offset="100%" stop-color="#818CF8"/>
+    </linearGradient>
+    <linearGradient id="slab1-left" x1="17" y1="12" x2="35" y2="26" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#2563EB"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="slab1-right" x1="35" y1="12" x2="53" y2="26" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4F46E5"/>
+      <stop offset="100%" stop-color="#3730A3"/>
+    </linearGradient>
+
+    <!-- Gradients for Slab 2 (Middle - Electric Indigo to Royal Violet) -->
+    <linearGradient id="slab2-top" x1="11" y1="19" x2="47" y2="37" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#818CF8"/>
+      <stop offset="50%" stop-color="#A855F7"/>
+      <stop offset="100%" stop-color="#C084FC"/>
+    </linearGradient>
+    <linearGradient id="slab2-left" x1="11" y1="28" x2="29" y2="42" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#6B21A8"/>
+      <stop offset="100%" stop-color="#581C87"/>
+    </linearGradient>
+    <linearGradient id="slab2-right" x1="29" y1="28" x2="47" y2="42" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#9333EA"/>
+      <stop offset="100%" stop-color="#7E22CE"/>
+    </linearGradient>
+
+    <!-- Gradients for Slab 3 (Bottom - Cosmic Violet to Radiant Magenta) -->
+    <linearGradient id="slab3-top" x1="17" y1="35" x2="53" y2="53" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A855F7"/>
+      <stop offset="50%" stop-color="#D946EF"/>
+      <stop offset="100%" stop-color="#F43F5E"/>
+    </linearGradient>
+    <linearGradient id="slab3-left" x1="17" y1="44" x2="35" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#9D174D"/>
+      <stop offset="100%" stop-color="#831843"/>
+    </linearGradient>
+    <linearGradient id="slab3-right" x1="35" y1="44" x2="53" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#C026D3"/>
+      <stop offset="100%" stop-color="#A21CAF"/>
+    </linearGradient>
+
+    <!-- Ambient Glow Filter -->
+    <filter id="cosmic-glow" x="-15%" y="-15%" width="130%" height="130%" filterUnits="userSpaceOnUse">
+      <feGaussianBlur stdDeviation="1.8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <g filter="url(#cosmic-glow)">
+    <!-- Slab 3 (Bottom Layer, X=35, Y=44) -->
+    <g id="slab-3">
+      <!-- Left side face -->
+      <path d="M 17 44 L 35 53 L 35 58 L 17 49 Z" fill="url(#slab3-left)"/>
+      <!-- Right side face -->
+      <path d="M 35 53 L 53 44 L 53 49 L 35 58 Z" fill="url(#slab3-right)"/>
+      <!-- Top face -->
+      <path d="M 35 35 L 53 44 L 35 53 L 17 44 Z" fill="url(#slab3-top)"/>
+      <!-- Edge highlight -->
+      <path d="M 17 44 L 35 35 L 53 44" stroke="#FFA4E8" stroke-width="0.75" stroke-linecap="round" opacity="0.6"/>
+    </g>
+
+    <!-- Slab 2 (Middle Layer, X=29, Y=28) -->
+    <g id="slab-2">
+      <!-- Left side face -->
+      <path d="M 11 28 L 29 37 L 29 42 L 11 33 Z" fill="url(#slab2-left)"/>
+      <!-- Right side face -->
+      <path d="M 29 37 L 47 28 L 47 33 L 29 42 Z" fill="url(#slab2-right)"/>
+      <!-- Top face -->
+      <path d="M 29 19 L 47 28 L 29 37 L 11 28 Z" fill="url(#slab2-top)"/>
+      <!-- Edge highlight -->
+      <path d="M 11 28 L 29 19 L 47 28" stroke="#E9D5FF" stroke-width="0.75" stroke-linecap="round" opacity="0.7"/>
+    </g>
+
+    <!-- Slab 1 (Top Layer, X=35, Y=12) -->
+    <g id="slab-1">
+      <!-- Left side face -->
+      <path d="M 17 12 L 35 21 L 35 26 L 17 17 Z" fill="url(#slab1-left)"/>
+      <!-- Right side face -->
+      <path d="M 35 21 L 53 12 L 53 17 L 35 26 Z" fill="url(#slab1-right)"/>
+      <!-- Top face -->
+      <path d="M 35 3 L 53 12 L 35 21 L 17 12 Z" fill="url(#slab1-top)"/>
+      <!-- Edge highlight -->
+      <path d="M 17 12 L 35 3 L 53 12" stroke="#BAE6FD" stroke-width="0.75" stroke-linecap="round" opacity="0.8"/>
+    </g>
+
+    <!-- AI Neural Core Spark (Centrally placed on top layer) -->
+    <g transform="translate(35, 12)">
+      <!-- Outer spark diamond -->
+      <path d="M 0 -4 L 1.2 -1.2 L 4 0 L 1.2 1.2 L 0 4 L -1.2 1.2 L -4 0 L -1.2 -1.2 Z" fill="#FFFFFF"/>
+      <circle cx="0" cy="0" r="1.5" fill="#38BDF8"/>
+      <circle cx="0" cy="0" r="0.7" fill="#FFFFFF"/>
+    </g>
+  </g>
 </svg>

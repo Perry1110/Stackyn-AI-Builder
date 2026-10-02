@@ -42,7 +42,10 @@ const PublishPage = () => {
         </div>
         <h1 className='text-lg font-semibold text-zinc-900 mb-1.5'>Website Unavailable</h1>
         <p className='text-sm text-zinc-500 max-w-sm leading-relaxed mb-6'>{error}</p>
-        <div className='text-[10px] font-semibold uppercase tracking-widest text-zinc-400'>Stackyn-AI</div>
+        <div className='flex items-center gap-1.5 text-xs font-semibold uppercase tracking-widest text-zinc-500'>
+          <img src="/logo.svg" alt="Stackyn-AI" className="size-4" />
+          <span>Stackyn-AI</span>
+        </div>
       </div>
     )
   }
