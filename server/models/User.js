@@ -5,6 +5,17 @@ const UserSchema = new Schema({
     name: {type: String, required: true},
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     password: { type: String, required: true },
+    subscription: {
+        plan: { type: String, enum: ['free', 'pro', 'studio'], default: 'free' },
+        billingCycle: { type: String, enum: ['monthly', 'yearly'], default: 'yearly' },
+        status: { type: String, enum: ['active', 'inactive', 'cancelled'], default: 'active' },
+        startDate: { type: Date, default: Date.now },
+        endDate: { type: Date },
+        paymentId: { type: String },
+        orderId: { type: String },
+        amount: { type: Number, default: 0 },
+        currency: { type: String, default: 'INR' }
+    }
 },{timestamps: true})
 
 // Hash password before saving

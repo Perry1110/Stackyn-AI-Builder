@@ -1,6 +1,35 @@
-<svg width="63" height="71" viewBox="0 0 63 71" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M0.87793 22.8482V40.4288L11.7198 34.2753V23.4334L28.1291 14.0567L17.5814 7.61719L5.98284 14.1282C2.82985 15.8982 0.87793 19.2324 0.87793 22.8482Z" fill="white"/>
-<path d="M63 47.4682V29.8876L52.1581 36.0411V46.883L35.7488 56.2597L46.2965 62.6992L57.8951 56.1882C61.0481 54.4182 63 51.084 63 47.4682Z" fill="white"/>
-<path d="M62.5224 22.1214L62.707 24.614L51.8652 30.4744V23.4419L21.0977 6.43948L31.6454 0L57.3558 14.0907C60.3274 15.7193 62.2721 18.742 62.5224 22.1214Z" fill="white"/>
-<path d="M0.184636 48.7927L0 46.3001L10.8419 40.4396V47.4722L41.6093 64.4746L31.0616 70.9141L5.35122 56.8233C2.37962 55.1947 0.434958 52.172 0.184636 48.7927Z" fill="white"/>
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Favicon Vibrant Gradients -->
+    <linearGradient id="fav-top" x1="8" y1="2" x2="26" y2="12" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#38BDF8"/>
+      <stop offset="100%" stop-color="#818CF8"/>
+    </linearGradient>
+    <linearGradient id="fav-mid" x1="5" y1="9" x2="23" y2="19" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#818CF8"/>
+      <stop offset="100%" stop-color="#C084FC"/>
+    </linearGradient>
+    <linearGradient id="fav-bot" x1="8" y1="17" x2="26" y2="27" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#A855F7"/>
+      <stop offset="100%" stop-color="#EC4899"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Bottom Slab (Slab 3) -->
+  <path d="M 9 22 L 18 26.5 L 18 29 L 9 24.5 Z" fill="#831843"/>
+  <path d="M 18 26.5 L 27 22 L 27 24.5 L 18 29 Z" fill="#BE185D"/>
+  <path d="M 18 17.5 L 27 22 L 18 26.5 L 9 22 Z" fill="url(#fav-bot)"/>
+
+  <!-- Middle Slab (Slab 2) -->
+  <path d="M 5 14 L 14 18.5 L 14 21 L 5 16.5 Z" fill="#581C87"/>
+  <path d="M 14 18.5 L 23 14 L 23 16.5 L 14 21 Z" fill="#7E22CE"/>
+  <path d="M 14 9.5 L 23 14 L 14 18.5 L 5 14 Z" fill="url(#fav-mid)"/>
+
+  <!-- Top Slab (Slab 1) -->
+  <path d="M 9 6 L 18 10.5 L 18 13 L 9 8.5 Z" fill="#1D4ED8"/>
+  <path d="M 18 10.5 L 27 6 L 27 8.5 L 18 13 Z" fill="#3730A3"/>
+  <path d="M 18 1.5 L 27 6 L 18 10.5 L 9 6 Z" fill="url(#fav-top)"/>
+
+  <!-- AI Spark in Center of Top Slab -->
+  <circle cx="18" cy="6" r="1.6" fill="#FFFFFF"/>
 </svg>

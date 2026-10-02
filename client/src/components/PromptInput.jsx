@@ -46,7 +46,7 @@ if(variant === "glass"){
 
                     <button type='submit' 
                     disabled={!value.trim() || loading}
-                    className="flex items-center justify-center p-1.5 rounded-full bg-red-600 text-white hover:bg-red-700 disabled:opacity-40 cursor-pointer">
+                    className="flex items-center justify-center p-1.5 rounded-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white hover:from-violet-500 hover:to-indigo-500 disabled:opacity-40 cursor-pointer shadow-md shadow-violet-500/25 transition">
                         {loading ? <Loader2Icon size={18} className="animate-spin"/> : <ArrowRightIcon size={18}/>}
                     </button>
                 </div>
@@ -57,7 +57,7 @@ if(variant === "glass"){
 }
 
   return (
-    <div className={`bg-white border border-zinc-200 rounded-xl flex items-end gap-2 focus-within:ring-1 focus-within:ring-zinc-300 transition ${large ? "p-4" : "p-3"}`}>
+    <div className={`bg-black/50 border border-white/15 rounded-xl flex items-end gap-2 focus-within:ring-1 focus-within:ring-purple-400/50 focus-within:border-purple-400/60 transition shadow-inner ${large ? "p-4" : "p-2.5"}`}>
 
         <textarea ref={textareaRef} 
         value={value} 
@@ -66,17 +66,17 @@ if(variant === "glass"){
         placeholder={placeholder} 
         disabled={loading}
         rows={large ? 5 : 1} 
-        className={`flex-1 bg-transparent border-none outline-none resize-none text-zinc-900 placeholder:text-zinc-400 ${large ? "text-base" : "text-sm"}`}/>
+        className={`flex-1 bg-transparent border-none outline-none resize-none text-white placeholder:text-zinc-500 ${large ? "text-base" : "text-xs"}`}/>
 
         <button
         onClick={()=> handleSubmit()}
         disabled={!value.trim() || loading}
-        className='inline-flex items-center justify-center bg-zinc-950 text-white hover:bg-zinc-800 disabled:opacity-40 cursor-pointer rounded-full shrink-0'
+        className='inline-flex items-center justify-center bg-gradient-to-r from-violet-600 to-indigo-600 text-white hover:from-violet-500 hover:to-indigo-500 disabled:opacity-30 cursor-pointer rounded-full shrink-0 shadow-sm shadow-purple-500/25 transition'
         style={{
-            width: large ? 36 : 24,
-             height: large ? 36 : 24,
+            width: large ? 36 : 26,
+             height: large ? 36 : 26,
         }}>
-            {loading ? <Loader2Icon size={large ? 20 : 15} className="animate-spin"/> : <ArrowRightIcon size={large ? 20 : 15}/>}
+            {loading ? <Loader2Icon size={large ? 20 : 14} className="animate-spin"/> : <ArrowRightIcon size={large ? 20 : 14}/>}
         </button>
     </div>
   )

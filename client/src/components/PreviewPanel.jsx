@@ -87,7 +87,7 @@ const dependencies = useMemo(()=>{
 },[liveFiles])
 
   return (
-    <div className="h-full w-full">
+    <div className="h-full w-full bg-[#090314]">
         <SandpackProvider key={project._id} template='react' 
         files={sandpackFiles} 
         customSetup={{dependencies}} 
@@ -105,16 +105,16 @@ const dependencies = useMemo(()=>{
         }} 
         theme={{
             colors: {
-                surface1: "#ffffff",
-                surface2: "#f4f4f5",
-                surface3: "#e4e4e7",
-                clickable: "#71717a",
-                base: "#09090b",
-                disabled: "#a1a1aa",
-                hover: "#18181b",
-                accent: "#18181b",
+                surface1: "#0a0316",
+                surface2: "#14072b",
+                surface3: "#240d4a",
+                clickable: "#a1a1aa",
+                base: "#f4f4f5",
+                disabled: "#71717a",
+                hover: "#c084fc",
+                accent: "#a855f7",
                 error: "#ef4444",
-                errorSurface: "#fef2f2",
+                errorSurface: "#450a0a",
             },
             font: {
                 body: "'Urbanist', system-ui, -apple-system, sans-serif",

@@ -1,21 +1,51 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:ital,wght@0,100..900;1,100..900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:ital,wght@0,100..900;1,100..900&family=Space+Grotesk:wght@300..700&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Urbanist', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-space: 'Space Grotesk', sans-serif;
+}
+
+/* Typography */
+.hero-title {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.055em;
 }
 
 /* Base */
+html {
+  scroll-behavior: smooth;
+  font-family: 'Space Grotesk', var(--font-sans);
+}
+
 * {
   box-sizing: border-box;
+}
+
+body, button, input, textarea, select {
+  font-family: 'Space Grotesk', var(--font-sans);
 }
 
 body {
   background-color: #fcfcfc;
   color: #09090b;
-  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Optical frosted glass blur effects for adaptive navbar with purple theme accent */
+.glass-nav-top {
+  background: linear-gradient(180deg, rgba(22, 10, 40, 0.5) 0%, rgba(10, 5, 22, 0.4) 100%);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+}
+
+.glass-nav-scrolled {
+  background: linear-gradient(135deg, rgba(26, 12, 48, 0.88) 0%, rgba(14, 7, 30, 0.82) 50%, rgba(30, 12, 56, 0.88) 100%);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
 }
 
 /* Scrollbars */
@@ -24,15 +54,13 @@ body {
 
 ::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #e4e4e7; border-radius: 9999px; }
-::-webkit-scrollbar-thumb:hover { background: #d4d4d8; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(168, 85, 247, 0.45); }
 
-
-
-/* Dot loader static */
+/* Dot loader animated */
 .dot-loader {
   display: flex;
-  gap: 4px;
+  gap: 5px;
   align-items: center;
 }
 
@@ -40,8 +68,17 @@ body {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #18181b;
-  opacity: 0.8;
+  background: #c084fc;
+  box-shadow: 0 0 6px rgba(192, 132, 252, 0.6);
+  animation: dotPulse 1.4s infinite ease-in-out both;
+}
+
+.dot-loader span:nth-child(1) { animation-delay: -0.32s; }
+.dot-loader span:nth-child(2) { animation-delay: -0.16s; }
+
+@keyframes dotPulse {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.35; }
+  40% { transform: scale(1); opacity: 1; }
 }
 
 
